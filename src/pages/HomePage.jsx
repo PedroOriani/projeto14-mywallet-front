@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
@@ -11,12 +11,21 @@ export default function HomePage() {
   const token = JSON.parse(sessionStorage.getItem("token"));
 
   const [transaction, setTransactions] = ([])
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState(0);
+  const [name, setName] = ('')
+  const [day, setDay] = ('')
+
+  const navigateTo = useNavigate();
 
   console.log(token)
 
   function loadTransactions(){
-
+  //   const promise = axios.get(`${import.meta.env.VITE_API_URL}/userInfos`, userData)
+  //     promise.then(resposta => {
+  //       sessionStorage.setItem('token', JSON.stringify(resposta.data));
+  //       navigateTo('/home')
+  //     })
+  //     promise.catch((erro) => alert(erro.response.data))
   }
 
   useEffect(loadTransactions, [])
