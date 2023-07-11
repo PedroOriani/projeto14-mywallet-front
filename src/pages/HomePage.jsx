@@ -18,13 +18,19 @@ export default function HomePage() {
 
   console.log(token)
 
+  useEffect(() => {
+    if (!token) {
+      navigateTo('/');
+    }
+  }, []);
+
   const config = {
     headers: {
         Authorization: `Bearer ${token}`,
     },
 };
 
-  function loadTransactions() {
+  function getData() {
     const promise = axios.get(`${import.meta.env.VITE_API_URL}/userInfos`, config)
     promise.then(resposta => {
       setName(resposta.data.name)
@@ -33,9 +39,19 @@ export default function HomePage() {
     promise.catch((erro) => alert(erro.response.data))
   }
 
-  const day = JSON.parse(sessionStorage.getItem("day"))
-  console.log(day)
+  function loadTransactions(){
+    const promise = axios.get(`${import.meta.env.VITE_API_URL}/transactions`, config)
+    promise.then(resposta => {
+      if(resposta.data.length === 0){
+        alert('Você não fez nenhuma transação')
+      }else{
+        setTransactions(resposta.data)
+      }
+    })
+    promise.catch((erro) => alert(erro.response.data))
+  }
 
+  useEffect(getData, [])
   useEffect(loadTransactions, [])
 
   return (
@@ -66,7 +82,7 @@ export default function HomePage() {
 
         <article>
           <strong>Saldo</strong>
-          <Value data-test="total-amount" color={"positivo"}>2880,00</Value>
+          <Value data-test="total-amount" color={"positivo"}>{total}</Value>
         </article>
       </TransactionsContainer>
 
