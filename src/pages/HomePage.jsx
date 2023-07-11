@@ -102,10 +102,10 @@ export default function HomePage() {
         <ul>
           {transactions.map(t => (
             <ListItemContainer key = {t._id}>
-            <div>
+            <SCdados>
               <span>{t.day}</span>
               <strong data-test="registry-name">{t.description}</strong>
-            </div>
+            </SCdados>
             <Value data-test="registry-amount" color={t.type === "entrada" ? "positivo" : "negativo"}>{(t.value)}</Value>
           </ListItemContainer>
           ))
@@ -134,6 +134,14 @@ export default function HomePage() {
   )
 }
 
+const SCdados = styled.div`
+padding-right:20px;
+  overflow-x: scroll;
+  white-space: nowrap;
+  ::-webkit-scrollbar{
+    display: none;
+  }
+`
 const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -157,6 +165,7 @@ const TransactionsContainer = styled.article`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-right: 10px;
   article {
     display: flex;
     justify-content: space-between;   
@@ -186,6 +195,7 @@ const ButtonsContainer = styled.section`
   }
 `
 const Value = styled.div`
+  width: 50px;
   font-size: 16px;
   text-align: right;
   color: ${(props) => (props.color === "positivo" ? "green" : "red")};
