@@ -14,6 +14,8 @@ export default function HomePage() {
   const [name, setName] = useState('');
   const [id, setId] = useState('')
 
+  console.log(token)
+
   let total = 0;
 
   const navigateTo = useNavigate();
@@ -33,9 +35,11 @@ export default function HomePage() {
   function getData() {
     const promise = axios.get(`${import.meta.env.VITE_API_URL}/userInfos`, config)
     promise.then(resposta => {
+      console.log(resposta.data.user._id)
       setId(resposta.data.user._id)
       setName(resposta.data.name)
       sessionStorage.setItem('day', JSON.stringify(resposta.data.day));
+      sessionStorage.setItem('id', JSON.stringify(resposta.data.user._id));
     })
     promise.catch((erro) => alert(erro.response.data))
   }
@@ -51,7 +55,7 @@ export default function HomePage() {
     const promise = axios.get(`${import.meta.env.VITE_API_URL}/transactions`, configId)
     promise.then(resposta => {
       if(resposta.data.length === 0){
-        alert('Você não fez nenhuma transação')
+        setTransactions([])
       }else{
         const dados = resposta.data;
         const reversed = dados.reverse()

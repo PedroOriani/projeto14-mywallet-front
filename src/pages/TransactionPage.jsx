@@ -8,6 +8,7 @@ export default function TransactionsPage() {
 
   const token = JSON.parse(sessionStorage.getItem("token"));
   const day = JSON.parse(sessionStorage.getItem("day"));
+  const id = JSON.parse(sessionStorage.getItem("id"));
 
   const navigateTo = useNavigate();
 
@@ -35,7 +36,8 @@ export default function TransactionsPage() {
       day: day,
       value: Number(value).toFixed(2),
       description: description,
-      type: tipo
+      type: tipo,
+      id: id
     }
 
     const promise = axios.post(`${import.meta.env.VITE_API_URL}/transaction`, newTransaction ,config)
