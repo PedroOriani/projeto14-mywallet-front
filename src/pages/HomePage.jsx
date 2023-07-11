@@ -11,9 +11,10 @@ export default function HomePage() {
   const token = JSON.parse(sessionStorage.getItem("token"));
 
   const [transactions, setTransactions] = useState([])
-  const [total, setTotal] = useState();
   const [name, setName] = useState('');
   const [id, setId] = useState('')
+
+  let total = 0;
 
   const navigateTo = useNavigate();
 
@@ -63,17 +64,19 @@ export default function HomePage() {
     calcTotal()
   }
 
+  console.log(transactions)
+
   function calcTotal(){
-    let valor = 0;
     for (let i = 0; i < transactions.length; i++){
       if (transactions[i].type === "entrada"){
-        valor += Number(transactions[i].value);
+        total += Number(transactions[i].value);
       }else{
-        valor -= transactions[i].value;
+        total -= Number(transactions[i].value);
       }
     }
-    setTotal(valor.toFixed(2))
   }
+
+  calcTotal();
 
   useEffect(getData, [])
   useEffect(loadTransactions, [])
@@ -106,7 +109,7 @@ export default function HomePage() {
 
         <article>
           <strong>Saldo</strong>
-          <Value data-test="total-amount" color={"positivo"}>{total}</Value>
+          <Value data-test="total-amount" color={total >= 0 ? "positivo" : "negativo"}>{total.toFixed(2)}</Value>
         </article>
       </TransactionsContainer>
 
