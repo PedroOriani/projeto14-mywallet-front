@@ -3,10 +3,23 @@ import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import { Link } from "react-router-dom"
 import { useState } from "react";
+import axios from "axios";
+import { useEffect } from "react";
 
 export default function HomePage() {
 
+  const token = JSON.parse(sessionStorage.getItem("token"));
+
+  const [transaction, setTransactions] = ([])
   const [total, setTotal] = useState();
+
+  console.log(token)
+
+  function loadTransactions(){
+
+  }
+
+  useEffect(loadTransactions, [])
 
   return (
     <HomeContainer>

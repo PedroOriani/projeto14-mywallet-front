@@ -21,7 +21,7 @@ export default function SignInPage() {
 
     const promise = axios.post(`${import.meta.env.VITE_API_URL}/sign-in`, userData)
       promise.then(resposta => {
-        console.log(resposta.data)
+        sessionStorage.setItem('token', JSON.stringify(resposta.data));
         navigateTo('/home')
       })
       promise.catch((erro) => alert(erro.response.data))
