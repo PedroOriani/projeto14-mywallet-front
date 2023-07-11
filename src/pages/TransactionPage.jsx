@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components"
 
 export default function TransactionsPage() {
@@ -26,16 +26,19 @@ export default function TransactionsPage() {
     },
   };
 
+  const { tipo } = useParams; 
+
   function newTransaction(e){
     e.preventDefault()
 
     const newTransaction ={
       day: day,
       value: Number(value).toFixed(2),
-      description: description
+      description: description,
+      type: tipo
     }
 
-    const promise = axios.post(`${import.meta.env.VITE_API_URL}/transaction`, config)
+    const promise = axios.post(`${import.meta.env.VITE_API_URL}/transaction`, newTransaction ,config)
     promise.then(resposta => {
       console.log(resposta.data)
       alert('Deu certo')      
