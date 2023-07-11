@@ -11,7 +11,7 @@ export default function HomePage() {
   const token = JSON.parse(sessionStorage.getItem("token"));
 
   const [transactions, setTransactions] = useState([])
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState();
   const [name, setName] = useState('');
 
   const navigateTo = useNavigate();
@@ -49,7 +49,23 @@ export default function HomePage() {
       }
     })
     promise.catch((erro) => alert(erro.response.data))
+
+    calcTotal()
   }
+
+  function calcTotal(){
+    let valor = 0;
+    for (let i = 0; i < transactions.length; i++){
+      if (transactions[i].type === "entrada"){
+        valor += Number(transactions[i].value);
+      }else{
+        valor -= transactions[i].value;
+      }
+    }
+    setTotal(valor.toFixed(2))
+  }
+
+  console.log(total)
 
   useEffect(getData, [])
   useEffect(loadTransactions, [])
@@ -58,8 +74,6 @@ export default function HomePage() {
     sessionStorage.clear()
     navigateTo('/')
   }
-
-  console.log(transactions)
 
   return (
     <HomeContainer>
