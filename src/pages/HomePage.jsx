@@ -12,28 +12,36 @@ export default function HomePage() {
 
   const [transaction, setTransactions] = ([])
   const [total, setTotal] = useState(0);
-  const [name, setName] = ('')
-  const [day, setDay] = ('')
+  const [name, setName] = useState('');
 
   const navigateTo = useNavigate();
 
   console.log(token)
 
-  function loadTransactions(){
-  //   const promise = axios.get(`${import.meta.env.VITE_API_URL}/userInfos`, userData)
-  //     promise.then(resposta => {
-  //       sessionStorage.setItem('token', JSON.stringify(resposta.data));
-  //       navigateTo('/home')
-  //     })
-  //     promise.catch((erro) => alert(erro.response.data))
+  const config = {
+    headers: {
+        Authorization: `Bearer ${token}`,
+    },
+};
+
+  function loadTransactions() {
+    const promise = axios.get(`${import.meta.env.VITE_API_URL}/userInfos`, config)
+    promise.then(resposta => {
+      setName(resposta.data.name)
+      sessionStorage.setItem('day', JSON.stringify(resposta.data.day));
+    })
+    promise.catch((erro) => alert(erro.response.data))
   }
+
+  const day = JSON.parse(sessionStorage.getItem("day"))
+  console.log(day)
 
   useEffect(loadTransactions, [])
 
   return (
     <HomeContainer>
       <Header>
-        <h1 data-test="user-name">Olá, Fulano</h1>
+        <h1 data-test="user-name">Olá, {name}</h1>
         <BiExit data-test="logout"/>
       </Header>
 
