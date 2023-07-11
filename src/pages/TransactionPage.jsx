@@ -11,7 +11,7 @@ export default function TransactionsPage() {
 
   const navigateTo = useNavigate();
 
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState('')
   const [description, setDescritpion] = useState('')
 
   useEffect(() => {
@@ -20,8 +20,14 @@ export default function TransactionsPage() {
     }
   }, []);
 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   function newTransaction(e){
-    e.preventDefault
+    e.preventDefault()
 
     const newTransaction ={
       day: day,
@@ -31,7 +37,8 @@ export default function TransactionsPage() {
 
     const promise = axios.post(`${import.meta.env.VITE_API_URL}/transaction`, config)
     promise.then(resposta => {
-      
+      console.log(resposta.data)
+      alert('Deu certo')      
     })
     promise.catch((erro) => alert(erro.response.data))
   }

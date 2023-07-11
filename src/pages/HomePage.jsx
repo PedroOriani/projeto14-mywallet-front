@@ -26,9 +26,9 @@ export default function HomePage() {
 
   const config = {
     headers: {
-        Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
-};
+  };
 
   function getData() {
     const promise = axios.get(`${import.meta.env.VITE_API_URL}/userInfos`, config)
@@ -54,11 +54,17 @@ export default function HomePage() {
   useEffect(getData, [])
   useEffect(loadTransactions, [])
 
+  function logOut(){
+    sessionStorage.clear()
+    navigateTo('/')
+    verifyToken()
+  }
+
   return (
     <HomeContainer>
       <Header>
         <h1 data-test="user-name">Olá, {name}</h1>
-        <BiExit data-test="logout"/>
+        <BiExit onClick={logOut} data-test="logout"/>
       </Header>
 
       <TransactionsContainer>
