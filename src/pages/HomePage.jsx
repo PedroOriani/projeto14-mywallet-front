@@ -10,13 +10,11 @@ export default function HomePage() {
 
   const token = JSON.parse(sessionStorage.getItem("token"));
 
-  const [transaction, setTransactions] = ([])
+  const [transactions, setTransactions] = useState([])
   const [total, setTotal] = useState(0);
   const [name, setName] = useState('');
 
   const navigateTo = useNavigate();
-
-  console.log(token)
 
   useEffect(() => {
     if (!token) {
@@ -45,7 +43,9 @@ export default function HomePage() {
       if(resposta.data.length === 0){
         alert('Você não fez nenhuma transação')
       }else{
-        setTransactions(resposta.data)
+        const dados = resposta.data;
+        const reversed = dados.reverse()
+        setTransactions(reversed)
       }
     })
     promise.catch((erro) => alert(erro.response.data))
@@ -57,8 +57,9 @@ export default function HomePage() {
   function logOut(){
     sessionStorage.clear()
     navigateTo('/')
-    verifyToken()
   }
+
+  console.log(transactions)
 
   return (
     <HomeContainer>
@@ -69,21 +70,16 @@ export default function HomePage() {
 
       <TransactionsContainer>
         <ul>
-          <ListItemContainer>
+          {transactions.map(t => (
+            <ListItemContainer key = {t._id}>
             <div>
-              <span>30/11</span>
-              <strong data-test="registry-name">Almoço mãe</strong>
+              <span>{t.day}</span>
+              <strong data-test="registry-name">{t.description}</strong>
             </div>
-            <Value data-test="registry-amount" color={"negativo"}>120,00</Value>
+            <Value data-test="registry-amount" color={t.type === "entrada" ? "positivo" : "negativo"}>{t.value}</Value>
           </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
+          ))
+          }
         </ul>
 
         <article>

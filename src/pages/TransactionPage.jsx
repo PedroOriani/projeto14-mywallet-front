@@ -26,7 +26,9 @@ export default function TransactionsPage() {
     },
   };
 
-  const { tipo } = useParams; 
+  const { tipo } = useParams(); 
+
+  console.log(tipo)
 
   function newTransaction(e){
     e.preventDefault()
@@ -41,7 +43,7 @@ export default function TransactionsPage() {
     const promise = axios.post(`${import.meta.env.VITE_API_URL}/transaction`, newTransaction ,config)
     promise.then(resposta => {
       console.log(resposta.data)
-      alert('Deu certo')      
+      navigateTo('/home')     
     })
     promise.catch((erro) => alert(erro.response.data))
   }
