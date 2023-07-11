@@ -1,13 +1,18 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { Link } from "react-router-dom"
+import { useState } from "react";
 
 export default function HomePage() {
+
+  const [total, setTotal] = useState();
+
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
-        <BiExit />
+        <h1 data-test="user-name">Olá, Fulano</h1>
+        <BiExit data-test="logout"/>
       </Header>
 
       <TransactionsContainer>
@@ -15,9 +20,9 @@ export default function HomePage() {
           <ListItemContainer>
             <div>
               <span>30/11</span>
-              <strong>Almoço mãe</strong>
+              <strong data-test="registry-name">Almoço mãe</strong>
             </div>
-            <Value color={"negativo"}>120,00</Value>
+            <Value data-test="registry-amount" color={"negativo"}>120,00</Value>
           </ListItemContainer>
 
           <ListItemContainer>
@@ -31,20 +36,24 @@ export default function HomePage() {
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
+          <Value data-test="total-amount" color={"positivo"}>2880,00</Value>
         </article>
       </TransactionsContainer>
 
 
       <ButtonsContainer>
-        <button>
-          <AiOutlinePlusCircle />
-          <p>Nova <br /> entrada</p>
-        </button>
-        <button>
-          <AiOutlineMinusCircle />
-          <p>Nova <br />saída</p>
-        </button>
+        <Link to='/nova-transacao/entrada'>
+          <button data-test="new-income">
+            <AiOutlinePlusCircle />
+            <p>Nova <br /> entrada</p>
+          </button>
+        </Link>
+        <Link to='/nova-transacao/saida'>
+          <button data-test="new-expense">
+            <AiOutlineMinusCircle />
+            <p>Nova <br />saída</p>
+          </button>
+        </Link>
       </ButtonsContainer>
 
     </HomeContainer>

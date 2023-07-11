@@ -1,20 +1,78 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import MyWalletLogo from "../components/MyWalletLogo"
+import { useState } from "react"
+import axios from "axios"
 
-export default function SignUpPage() {
+export default function SignUpPage(props) {
+  const { name, setName, email, setEmail, password, setPassword, confirmPass, setConfirmPass } = props
+  
+  const navigateTo = useNavigate();
+
+  function signUp(e){
+    e.preventDefault();
+    if (password === confirmPass){
+
+      const userData = {
+        name: name,
+        email: email,
+        password: password
+      }
+
+      const promise = axios.post(`${import.meta.env.VITE_API_URL}/sign-up`, userData)
+      promise.then(resposta => {
+        alert(resposta.data)
+        navigateTo('/')
+      })
+      promise.catch((erro) => alert(erro.response.data.message))
+      
+    }else{
+      alert("As senhas digitadas estão diferentes")
+    }
+    
+  }
+
   return (
     <SingUpContainer>
-      <form>
+      <form onSubmit={signUp}>
         <MyWalletLogo />
-        <input placeholder="Nome" type="text" />
-        <input placeholder="E-mail" type="email" />
-        <input placeholder="Senha" type="password" autocomplete="new-password" />
-        <input placeholder="Confirme a senha" type="password" autocomplete="new-password" />
-        <button>Cadastrar</button>
+        <input
+        data-test="name"
+        placeholder="Nome" 
+        type="text" 
+        value={name}
+        onChange={e => setName(e.target.value)}
+        />
+        <input
+        data-test="email"
+        placeholder="E-mail" 
+        type="email" 
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        />
+        <input
+        data-test="password"
+        placeholder="Senha" 
+        type="password" 
+        autoComplete="new-password" 
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        />
+        <input
+        data-test="conf-password"
+        placeholder="Confirme a senha" 
+        type="password" 
+        autoComplete="new-password"
+        value={confirmPass}
+        onChange={e => setConfirmPass(e.target.value)}
+        />
+        <button
+        data-test="sign-up-submit"
+        type="submit"
+        >Cadastrar</button>
       </form>
 
-      <Link>
+      <Link to='/'>
         Já tem uma conta? Entre agora!
       </Link>
     </SingUpContainer>

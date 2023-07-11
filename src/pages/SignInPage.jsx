@@ -7,12 +7,19 @@ export default function SignInPage() {
     <SingInContainer>
       <form>
         <MyWalletLogo />
-        <input placeholder="E-mail" type="email" />
-        <input placeholder="Senha" type="password" autocomplete="new-password" />
+        <input 
+        data-test='email'
+        placeholder="E-mail" 
+        type="email" />
+        <input 
+        data-test='password'
+        placeholder="Senha" 
+        type="password" 
+        autoComplete="new-password" />
         <button>Entrar</button>
       </form>
 
-      <Link>
+      <Link to='/cadastro'>
         Primeira vez? Cadastre-se!
       </Link>
     </SingInContainer>
