@@ -155,6 +155,8 @@ const Header = styled.header`
   color: white;
 `
 const TransactionsContainer = styled.article`
+  height: 446px;
+  overflow-y: scroll;
   flex-grow: 1;
   background-color: #fff;
   color: #000;
