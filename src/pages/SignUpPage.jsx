@@ -4,8 +4,12 @@ import MyWalletLogo from "../components/MyWalletLogo"
 import { useState } from "react"
 import axios from "axios"
 
-export default function SignUpPage(props) {
-  const { name, setName, email, setEmail, password, setPassword, confirmPass, setConfirmPass } = props
+export default function SignUpPage() {
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPass, setConfirmPass] = useState('')
   
   const navigateTo = useNavigate();
 
@@ -24,7 +28,7 @@ export default function SignUpPage(props) {
         alert(resposta.data)
         navigateTo('/')
       })
-      promise.catch((erro) => alert(erro.response.data.message))
+      promise.catch((erro) => alert(erro.response.data))
       
     }else{
       alert("As senhas digitadas estão diferentes")
@@ -46,7 +50,7 @@ export default function SignUpPage(props) {
         <input
         data-test="email"
         placeholder="E-mail" 
-        type="email" 
+        type="text" 
         value={email}
         onChange={e => setEmail(e.target.value)}
         />
