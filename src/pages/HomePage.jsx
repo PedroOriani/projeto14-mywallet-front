@@ -13,6 +13,7 @@ export default function HomePage() {
   const [transactions, setTransactions] = useState([])
   const [total, setTotal] = useState();
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('')
 
   const navigateTo = useNavigate();
 
@@ -32,6 +33,7 @@ export default function HomePage() {
     const promise = axios.get(`${import.meta.env.VITE_API_URL}/userInfos`, config)
     promise.then(resposta => {
       setName(resposta.data.name)
+      setEmail(resposta.data.email)
       sessionStorage.setItem('day', JSON.stringify(resposta.data.day));
     })
     promise.catch((erro) => alert(erro.response.data))
@@ -71,8 +73,12 @@ export default function HomePage() {
   useEffect(loadTransactions, [])
 
   function logOut(){
-    sessionStorage.clear()
-    navigateTo('/')
+    const promise = axios.delete(`${import.meta.env.VITE_API_URL}/sign-out`, config)
+    promise.then(resposta => {
+      sessionStorage.clear()
+      if (deleted.data.deletedCount > 0) return navigateTo("/")
+    })
+    promise.catch((erro) => alert(erro.response.data))
   }
 
   return (
@@ -90,7 +96,7 @@ export default function HomePage() {
               <span>{t.day}</span>
               <strong data-test="registry-name">{t.description}</strong>
             </div>
-            <Value data-test="registry-amount" color={t.type === "entrada" ? "positivo" : "negativo"}>{t.value}</Value>
+            <Value data-test="registry-amount" color={t.type === "entrada" ? "positivo" : "negativo"}>{(t.value).replace('.', ',')}</Value>
           </ListItemContainer>
           ))
           }
@@ -98,7 +104,7 @@ export default function HomePage() {
 
         <article>
           <strong>Saldo</strong>
-          <Value data-test="total-amount" color={"positivo"}>{total}</Value>
+          <Value data-test="total-amount" color={"positivo"}>{total.replace('.', ',')}</Value>
         </article>
       </TransactionsContainer>
 
