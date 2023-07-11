@@ -47,7 +47,6 @@ export default function HomePage() {
     },
   };
 
-
   function loadTransactions(){
     const promise = axios.get(`${import.meta.env.VITE_API_URL}/transactions`, configId)
     promise.then(resposta => {
@@ -63,8 +62,6 @@ export default function HomePage() {
 
     calcTotal()
   }
-
-  console.log(transactions)
 
   function calcTotal(){
     for (let i = 0; i < transactions.length; i++){
@@ -84,6 +81,14 @@ export default function HomePage() {
   function logOut(){
       sessionStorage.clear()
       navigateTo("/")
+  }
+
+  function entrada(){
+    navigateTo("/nova-transacao/entrada")
+  }
+
+  function saida(){
+    navigateTo("/nova-transacao/saida")
   }
 
   return (
@@ -115,18 +120,14 @@ export default function HomePage() {
 
 
       <ButtonsContainer>
-        <Link to='/nova-transacao/entrada'>
-          <button data-test="new-income">
+          <button data-test="new-income" onClick={entrada}>
             <AiOutlinePlusCircle />
             <p>Nova <br /> entrada</p>
           </button>
-        </Link>
-        <Link to='/nova-transacao/saida'>
-          <button data-test="new-expense">
+          <button data-test="new-expense" onClick={saida}>
             <AiOutlineMinusCircle />
             <p>Nova <br />saída</p>
           </button>
-        </Link>
       </ButtonsContainer>
 
     </HomeContainer>

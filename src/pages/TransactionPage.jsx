@@ -28,8 +28,6 @@ export default function TransactionsPage() {
 
   const { tipo } = useParams(); 
 
-  console.log(tipo)
-
   function newTransaction(e){
     e.preventDefault()
 
@@ -50,7 +48,7 @@ export default function TransactionsPage() {
 
   return (
     <TransactionsContainer>
-      <h1>Nova TRANSAÇÃO</h1>
+      <h1>Nova {tipo}</h1>
       <form onSubmit={newTransaction}>
         <input 
         data-test="registry-amount-input" 
@@ -66,7 +64,7 @@ export default function TransactionsPage() {
         value={description}
         onChange={e => setDescritpion(e.target.value)}
         />
-        <button data-test="registry-save" type="submit">Salvar TRANSAÇÃO</button>
+        <button data-test="registry-save" type="submit">Salvar {tipo}</button>
       </form>
     </TransactionsContainer>
   )
