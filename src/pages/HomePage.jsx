@@ -13,7 +13,7 @@ export default function HomePage() {
   const [transactions, setTransactions] = useState([])
   const [total, setTotal] = useState();
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('')
+  const [id, setId] = useState('')
 
   const navigateTo = useNavigate();
 
@@ -32,15 +32,23 @@ export default function HomePage() {
   function getData() {
     const promise = axios.get(`${import.meta.env.VITE_API_URL}/userInfos`, config)
     promise.then(resposta => {
+      setId(resposta.data.user._id)
       setName(resposta.data.name)
-      setEmail(resposta.data.email)
       sessionStorage.setItem('day', JSON.stringify(resposta.data.day));
     })
     promise.catch((erro) => alert(erro.response.data))
   }
 
+  const configId = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      id: id
+    },
+  };
+
+
   function loadTransactions(){
-    const promise = axios.get(`${import.meta.env.VITE_API_URL}/transactions`, config)
+    const promise = axios.get(`${import.meta.env.VITE_API_URL}/transactions`, configId)
     promise.then(resposta => {
       if(resposta.data.length === 0){
         alert('Você não fez nenhuma transação')
@@ -67,18 +75,12 @@ export default function HomePage() {
     setTotal(valor.toFixed(2))
   }
 
-  console.log(total)
-
   useEffect(getData, [])
   useEffect(loadTransactions, [])
 
   function logOut(){
-    const promise = axios.delete(`${import.meta.env.VITE_API_URL}/sign-out`, config)
-    promise.then(resposta => {
       sessionStorage.clear()
-      if (deleted.data.deletedCount > 0) return navigateTo("/")
-    })
-    promise.catch((erro) => alert(erro.response.data))
+      navigateTo("/")
   }
 
   return (
@@ -96,7 +98,7 @@ export default function HomePage() {
               <span>{t.day}</span>
               <strong data-test="registry-name">{t.description}</strong>
             </div>
-            <Value data-test="registry-amount" color={t.type === "entrada" ? "positivo" : "negativo"}>{(t.value).replace('.', ',')}</Value>
+            <Value data-test="registry-amount" color={t.type === "entrada" ? "positivo" : "negativo"}>{(t.value)}</Value>
           </ListItemContainer>
           ))
           }
@@ -104,7 +106,7 @@ export default function HomePage() {
 
         <article>
           <strong>Saldo</strong>
-          <Value data-test="total-amount" color={"positivo"}>{total.replace('.', ',')}</Value>
+          <Value data-test="total-amount" color={"positivo"}>{total}</Value>
         </article>
       </TransactionsContainer>
 
